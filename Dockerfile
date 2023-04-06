@@ -1,4 +1,4 @@
-FROM python:3.6-buster as builder
+FROM python:3.8-buster as builder
 WORKDIR /app
 COPY ./haaska/haaska.py .
 COPY ./haaska/config/config.json.sample ./config.json
@@ -7,13 +7,13 @@ RUN pip install -t . requests pysocks awslambdaric
 FROM alpine:latest as tailscale
 WORKDIR /app
 COPY . ./
-ENV TSFILE=tailscale_1.20.1_amd64.tgz
+ENV TSFILE=tailscale_1.38.4_amd64.tgz
 RUN wget https://pkgs.tailscale.com/stable/${TSFILE} && \
   tar xzf ${TSFILE} --strip-components=1
 COPY . ./
 
 
-FROM public.ecr.aws/lambda/python:3.6
+FROM public.ecr.aws/lambda/python:3.8
 #can't test locally without it
 ADD https://github.com/aws/aws-lambda-runtime-interface-emulator/releases/latest/download/aws-lambda-rie /usr/local/bin/aws-lambda-rie
 RUN chmod 755 /usr/local/bin/aws-lambda-rie
