@@ -1,4 +1,4 @@
-FROM python:3.8-buster as builder
+FROM python:3.10-buster as builder
 WORKDIR /app
 COPY ./haaska/haaska.py .
 COPY ./haaska/config/config.json.sample ./config.json
@@ -7,7 +7,7 @@ RUN pip install -t . requests pysocks awslambdaric
 FROM alpine:latest as tailscale
 WORKDIR /app
 COPY . ./
-ENV TSFILE=tailscale_1.38.4_amd64.tgz
+ENV TSFILE=tailscale_1.56.1_amd64.tgz
 RUN wget https://pkgs.tailscale.com/stable/${TSFILE} && \
   tar xzf ${TSFILE} --strip-components=1
 COPY . ./
